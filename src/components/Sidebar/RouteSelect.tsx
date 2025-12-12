@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { FiHome, FiUsers, FiPaperclip } from "react-icons/fi";
+import { FiHome, FiLayers, FiUsers, FiPaperclip } from "react-icons/fi";
 
 type RouteSelectProps = {
   selectedPage: string;
@@ -16,19 +16,19 @@ export const RouteSelect = ({ selectedPage, onSelectPage }: RouteSelectProps) =>
         onClick={() => onSelectPage("Dashboard")}
       />
       <Route
-        Icon={FiUsers}
+        Icon={FiLayers}
         selected={selectedPage === "Bed"}
-        title="Room"
+        title="Lantai 2"
         onClick={() => onSelectPage("Bed")}
       />
       <Route
-        Icon={FiUsers} // Bisa ganti dengan ikon yang lebih relevan
+        Icon={FiLayers}
         selected={selectedPage === "Bed2"}
-        title="Room 2"
-        onClick={() => onSelectPage("Bed2")} // Menggunakan nilai yang berbeda untuk bed 2
+        title="Lantai 3"
+        onClick={() => onSelectPage("Bed2")}
       />
       <Route
-        Icon={FiPaperclip}
+        Icon={FiUsers}
         selected={selectedPage === "Personel"}
         title="Personel"
         onClick={() => onSelectPage("Personel")}

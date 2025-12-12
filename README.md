@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# JKC Bed Management System
 
-## Getting Started
+Sistem manajemen kasur untuk Jakarta Kidney Center dengan integrasi database PostgreSQL.
 
-First, run the development server:
+## Fitur
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+✅ **Manajemen Kasur**
+- Lihat status kasur (kosong, terisi, diperbaiki)
+- Assign pasien ke kasur
+- Release kasur
+- Tandai kasur sedang diperbaiki
+- Durasi occupancy otomatis
+
+✅ **Dashboard**
+- Statistik real-time
+- Filter berdasarkan status, lantai, ruangan
+- Visualisasi layout ruangan
+
+✅ **Backend API**
+- RESTful API dengan Node.js + Express
+- Database PostgreSQL dengan Sequelize
+- CRUD operations untuk beds dan patients
+
+## Struktur Project
+
+```
+tae/
+├── backend/              # Backend API (Node.js + Express + Sequelize)
+│   ├── config/          # Database configuration
+│   ├── models/          # Sequelize models
+│   ├── routes/          # API routes
+│   ├── migrations/      # Database migrations
+│   ├── seeders/         # Database seeders
+│   └── server.js        # Entry point
+│
+├── bed/                 # Frontend (Next.js + React + TypeScript)
+│   └── src/
+│   ├── components/     # React components
+│   ├── context/        # React context (BedContext)
+│   ├── lib/            # API client
+│   └── types/          # TypeScript types
+│
+└── README.md           # This file
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Quick Start
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Lihat file `SETUP.md` untuk panduan setup lengkap.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Backend
+```bash
+cd backend
+npm install
+npm run init-db
+npm run dev
+```
 
-## Learn More
+### Frontend
+```bash
+npm install
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Dokumentasi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `SETUP.md` - Panduan setup lengkap
+- `INTEGRATION.md` - Panduan integrasi backend-frontend
+- `backend/README.md` - Dokumentasi API
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+**Frontend:**
+- Next.js 14
+- React 18
+- TypeScript
+- Tailwind CSS
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Backend:**
+- Node.js
+- Express
+- Sequelize ORM
+- PostgreSQL
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
+
+Private project for Jakarta Kidney Center

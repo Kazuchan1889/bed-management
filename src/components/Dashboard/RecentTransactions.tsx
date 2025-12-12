@@ -1,131 +1,91 @@
-import React, { useState } from "react";
-import { FiUsers } from "react-icons/fi";
+"use client";
 
-type BedStatus = "Available" | "Occupied" | "Repaired" | "Unassigned";
-
-type BedData = {
-  status: BedStatus;
-  nurse?: string;
-  patient?: string;
-  startDate?: string;
-  endDate?: string;
-  handler?: string;
-  issue?: string;
-};
-
-// Dummy initial data
-const initialBeds: Record<string, Record<string, BedData>> = {
-  "Room 101": {
-    "Bed 1": { status: "Available", handler: "Admin A" },
-    "Bed 2": {
-      status: "Occupied",
-      nurse: "Nurse Julia",
-      patient: "John Doe",
-      startDate: "2023-08-20",
-      endDate: "2023-08-25",
-      handler: "Dr. Smith",
-    },
-    "Bed 3": { status: "Repaired", issue: "Broken frame", handler: "Tech Team" },
-    "Bed 4": { status: "Available", handler: "Admin B" },
-  },
-  "Room 102": {
-    "Bed 1": {
-      status: "Occupied",
-      nurse: "Nurse Alex",
-      patient: "Sarah Lee",
-      startDate: "2023-08-21",
-      endDate: "2023-08-26",
-      handler: "Dr. Williams",
-    },
-    "Bed 2": { status: "Available", handler: "Admin C" },
-  },
-  "Room 103": {
-    "Bed 1": { status: "Repaired", issue: "Mattress replacement", handler: "Tech Team" },
-    "Bed 2": { status: "Available", handler: "Admin D" },
-    "Bed 3": {
-      status: "Occupied",
-      nurse: "Nurse Emma",
-      patient: "Michael Chen",
-      startDate: "2023-08-23",
-      handler: "Dr. Lee",
-    },
-    "Bed 4": { status: "Available", handler: "Admin E" },
-    "Bed 5": {
-      status: "Occupied",
-      nurse: "Nurse Ryan",
-      patient: "Sophia Park",
-      startDate: "2023-08-22",
-      handler: "Dr. Brown",
-    },
-    "Bed 6": { status: "Repaired", issue: "Broken wheel", handler: "Tech Team" },
-  },
-  // Dummy rooms tambahan
-  "Room 104": {
-    "Bed 1": { status: "Available", handler: "Admin F" },
-    "Bed 2": { status: "Available", handler: "Admin G" },
-  },
-  "Room 105": {
-    "Bed 1": { status: "Occupied", nurse: "Nurse Clara", patient: "David Kim", handler: "Dr. Adams" },
-    "Bed 2": { status: "Repaired", issue: "Broken headboard", handler: "Tech Team" },
-    "Bed 3": { status: "Available", handler: "Admin H" },
-  },
-};
+import React, { useState, useMemo } from "react";
+import { useBeds } from "@/context/BedContext";
 
 export const RecentTransactions = ({
   onSelectPage,
 }: {
   onSelectPage?: (page: string) => void;
 }) => {
+  const { beds, loading } = useBeds();
   const [showAll, setShowAll] = useState(false);
 
-  // fungsi hitung status per room
-  const summarizeRoom = (beds: Record<string, BedData>) => {
-    let available = 0,
-      occupied = 0,
-      repaired = 0;
+  // Group beds by room
+  const roomsData = useMemo(() => {
+    const roomMap: Record<string, { available: number; occupied: number; repair: number }> = {};
 
-    Object.values(beds).forEach((bed) => {
-      if (bed.status === "Available") available++;
-      else if (bed.status === "Occupied") occupied++;
-      else if (bed.status === "Repaired") repaired++;
+    beds.forEach((bed) => {
+      if (!roomMap[bed.room]) {
+        roomMap[bed.room] = { available: 0, occupied: 0, repair: 0 };
+      }
+
+      if (bed.status === "available") {
+        roomMap[bed.room].available++;
+      } else if (bed.status === "occupied") {
+        roomMap[bed.room].occupied++;
+      } else if (bed.status === "repair") {
+        roomMap[bed.room].repair++;
+      }
     });
 
-    return { available, occupied, repaired };
-  };
+    return Object.entries(roomMap).map(([room, stats]) => ({
+      room,
+      ...stats,
+    }));
+  }, [beds]);
 
-  const rooms = Object.entries(initialBeds);
-  const visibleRooms = showAll ? rooms : rooms.slice(0, 3);
+  const visibleRooms = showAll ? roomsData : roomsData.slice(0, 5);
+
+  if (loading) {
+    return (
+      <div className="col-span-12 p-4 rounded border border-stone-300 bg-white shadow-sm">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="flex items-center gap-1.5 font-medium">Bed Availability by Room</h3>
+        </div>
+        <div className="text-center py-8 text-gray-500">Memuat data...</div>
+      </div>
+    );
+  }
+
+  if (roomsData.length === 0) {
+    return (
+      <div className="col-span-12 p-4 rounded border border-stone-300 bg-white shadow-sm">
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="flex items-center gap-1.5 font-medium">Bed Availability by Room</h3>
+        </div>
+        <div className="text-center py-8 text-gray-500">Tidak ada data ruangan</div>
+      </div>
+    );
+  }
 
   return (
     <div className="col-span-12 p-4 rounded border border-stone-300 bg-white shadow-sm">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="flex items-center gap-1.5 font-medium">
-          Bed Availability by Room
-        </h3>
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className="text-sm text-violet-500 hover:underline"
-        >
-          {showAll ? "Show less" : "See all"}
-        </button>
+        <h3 className="flex items-center gap-1.5 font-medium">Bed Availability by Room</h3>
+        {roomsData.length > 5 && (
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="text-sm text-violet-500 hover:underline"
+          >
+            {showAll ? "Show less" : `See all (${roomsData.length})`}
+          </button>
+        )}
       </div>
       <table className="w-full table-auto">
         <TableHead />
         <tbody>
-          {visibleRooms.map(([room, beds], index) => {
-            const summary = summarizeRoom(beds);
-            return (
-              <TableRow
-                key={room}
-                room={room}
-                available={summary.available}
-                occupied={summary.occupied}
-                repaired={summary.repaired}
-                order={index + 1}
-                onSelectPage={onSelectPage}
-              />
-            );
-          })}
+          {visibleRooms.map((roomData, index) => (
+            <TableRow
+              key={roomData.room}
+              room={roomData.room}
+              available={roomData.available}
+              occupied={roomData.occupied}
+              repaired={roomData.repair}
+              order={index + 1}
+              onSelectPage={onSelectPage}
+            />
+          ))}
         </tbody>
       </table>
     </div>
@@ -161,21 +121,34 @@ const TableRow = ({
   order: number;
   onSelectPage?: (page: string) => void;
 }) => {
+  // Determine which page to navigate based on room floor
+  const getPageForRoom = (roomName: string): string => {
+    // Floor 2 rooms
+    if (['TOP_LEFT', 'LEFT', 'CENTER', 'RIGHT', 'BOTTOM_CENTER'].includes(roomName)) {
+      return 'Bed';
+    }
+    // Floor 3 rooms
+    if (['LEFT_TOP', 'LEFT_BOTTOM', 'MIDDLE', 'RIGHT_TOP', 'RIGHT_BOTTOM'].includes(roomName)) {
+      return 'Bed2';
+    }
+    return 'Bed';
+  };
+
   return (
     <tr className={order % 2 ? "bg-stone-100 text-sm" : "text-sm"}>
-      <td className="p-1.5 font-medium text-gray-700">{room}</td>
+      <td className="p-1.5 font-medium text-gray-700">{room.replace('_', ' ')}</td>
       <td className="p-1.5 text-green-700 font-semibold text-center">
         {available}
       </td>
       <td className="p-1.5 text-blue-700 font-semibold text-center">
         {occupied}
       </td>
-      <td className="p-1.5 text-red-700 font-semibold text-center">
+      <td className="p-1.5 text-yellow-700 font-semibold text-center">
         {repaired}
       </td>
       <td className="p-1.5 text-center">
         <button
-          onClick={() => onSelectPage && onSelectPage("Bed")}
+          onClick={() => onSelectPage && onSelectPage(getPageForRoom(room))}
           className="px-3 py-1 text-xs font-medium rounded bg-violet-100 text-violet-700 hover:bg-violet-200 transition"
         >
           Detail

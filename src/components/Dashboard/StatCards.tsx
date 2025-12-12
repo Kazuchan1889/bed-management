@@ -1,28 +1,43 @@
+"use client";
+
 import React from "react";
-// import { FiTrendingDown, FiTrendingUp } from "react-icons/fi";
+import { useBeds } from "@/context/BedContext";
 
 export const StatCards = () => {
+  const { stats, loading } = useBeds();
+
+  if (loading) {
+    return (
+      <>
+        <Card title="Available Beds" value="..." pillText="Loading" period="Loading data..." />
+        <Card title="Occupied Beds" value="..." pillText="Loading" period="Loading data..." />
+        <Card title="Beds Under Repair" value="..." pillText="Loading" period="Loading data..." />
+      </>
+    );
+  }
+
+  const availabilityRate = stats.total > 0 ? ((stats.available / stats.total) * 100).toFixed(0) : 0;
+  const occupancyRate = stats.total > 0 ? ((stats.occupied / stats.total) * 100).toFixed(0) : 0;
+  const repairRate = stats.total > 0 ? ((stats.repair / stats.total) * 100).toFixed(0) : 0;
+
   return (
     <>
       <Card
         title="Available Beds"
-        value="12"
-        pillText="Stable"
-        // trend="up"
+        value={stats.available.toString()}
+        pillText={`${availabilityRate}%`}
         period="Currently unassigned beds"
       />
       <Card
         title="Occupied Beds"
-        value="28"
-        pillText="+5%"
-        // trend="down"
+        value={stats.occupied.toString()}
+        pillText={`${occupancyRate}%`}
         period="Beds in active use"
       />
       <Card
         title="Beds Under Repair"
-        value="3"
-        pillText="2 issues"
-        // trend="down"
+        value={stats.repair.toString()}
+        pillText={`${repairRate}%`}
         period="Currently in maintenance"
       />
     </>
@@ -33,13 +48,11 @@ const Card = ({
   title,
   value,
   pillText,
-  // trend,
   period,
 }: {
   title: string;
   value: string;
   pillText: string;
-  // trend: "up" | "down";
   period: string;
 }) => {
   return (
@@ -49,18 +62,10 @@ const Card = ({
           <h3 className="text-stone-500 mb-2 text-sm font-medium">{title}</h3>
           <p className="text-3xl font-semibold">{value}</p>
         </div>
-
-        {/* <span
-          className={`text-xs flex items-center gap-1 font-medium px-2 py-1 rounded ${
-            trend === "up"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {trend === "up" ? <FiTrendingUp /> : <FiTrendingDown />} {pillText}
-        </span> */}
+        <span className="text-xs flex items-center gap-1 font-medium px-2 py-1 rounded bg-blue-100 text-blue-700">
+          {pillText}
+        </span>
       </div>
-
       <p className="text-xs text-stone-500">{period}</p>
     </div>
   );
