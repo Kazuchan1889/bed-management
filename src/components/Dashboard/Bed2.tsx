@@ -180,41 +180,107 @@ export default function DialysisFloor3Page() {
     repair: beds.filter((b) => b.floor === 3 && b.status === "repair").length,
   };
 
+  const filteredBeds = useMemo(() => {
+    const floor3Beds = beds.filter((b) => b.floor === 3);
+    if (statusFilter === "all") return floor3Beds;
+    return floor3Beds.filter((b) => b.status === statusFilter);
+  }, [beds, statusFilter]);
+
+  // Mobile View - Card Layout
+  const MobileBedCard = ({ bed }: { bed: any }) => {
+    const statusColors = {
+      available: "bg-green-50 border-green-300",
+      occupied: "bg-blue-50 border-blue-300",
+      repair: "bg-yellow-50 border-yellow-300",
+    };
+    const statusText = {
+      available: "Kosong",
+      occupied: "Terisi",
+      repair: "Diperbaiki",
+    };
+    const duration = bed.status === "occupied" ? getOccupancyDuration(bed.id) : null;
+
+    return (
+      <button
+        onClick={() => handleBedClick(bed)}
+        className={`w-full text-left p-3 rounded-lg border-2 ${statusColors[bed.status as keyof typeof statusColors]} transition-all active:scale-[0.98] touch-manipulation`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-bold text-lg text-gray-800">Kasur #{bed.id}</span>
+              <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                bed.status === "available" ? "bg-green-200 text-green-800" :
+                bed.status === "occupied" ? "bg-blue-200 text-blue-800" :
+                "bg-yellow-200 text-yellow-800"
+              }`}>
+                {statusText[bed.status as keyof typeof statusText]}
+              </span>
+            </div>
+            <div className="text-xs text-gray-600">
+              Lantai {bed.floor} • {bed.room.replace('_', ' ')}
+            </div>
+            {bed.patient && (
+              <div className="mt-2 text-sm font-medium text-gray-800">
+                Pasien: {bed.patient.name}
+              </div>
+            )}
+            {duration && (
+              <div className="text-xs text-gray-600 mt-1">
+                Durasi: {duration}
+              </div>
+            )}
+            {bed.nurse && (
+              <div className="text-xs text-gray-600 mt-1">
+                PIC: {bed.nurse.name}
+              </div>
+            )}
+          </div>
+          <div className="ml-2">
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <main className="min-h-screen w-full bg-gray-100 text-gray-900">
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <header className="mb-6">
-          <h1 className="text-xl md:text-2xl font-bold leading-tight">
+      <div className="mx-auto max-w-6xl px-2 sm:px-4 py-4 sm:py-8">
+        <header className="mb-4 sm:mb-6">
+          <h1 className="text-base sm:text-xl md:text-2xl font-bold leading-tight">
             DYALISIS BED AND MACHINE MANAGEMENT
           </h1>
-          <p className="text-gray-600">KLINIK UTAMA JAKARTA KIDNEY CENTER — Lantai 3</p>
+          <p className="text-xs sm:text-sm text-gray-600">KLINIK UTAMA JAKARTA KIDNEY CENTER — Lantai 3</p>
         </header>
 
         {/* Statistics Bar */}
-        <div className="mb-6 grid grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
-            <div className="text-sm text-gray-600">Total Kasur</div>
-            <div className="text-2xl font-bold text-gray-800">{stats.total}</div>
+        <div className="mb-4 sm:mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+          <div className="bg-white rounded-lg p-2 sm:p-4 border-2 border-gray-200">
+            <div className="text-xs sm:text-sm text-gray-600">Total Kasur</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-800">{stats.total}</div>
           </div>
-          <div className="bg-green-50 rounded-lg p-4 border-2 border-green-200">
-            <div className="text-sm text-gray-600">Kosong</div>
-            <div className="text-2xl font-bold text-green-700">{stats.available}</div>
+          <div className="bg-green-50 rounded-lg p-2 sm:p-4 border-2 border-green-200">
+            <div className="text-xs sm:text-sm text-gray-600">Kosong</div>
+            <div className="text-xl sm:text-2xl font-bold text-green-700">{stats.available}</div>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
-            <div className="text-sm text-gray-600">Terisi</div>
-            <div className="text-2xl font-bold text-blue-700">{stats.occupied}</div>
+          <div className="bg-blue-50 rounded-lg p-2 sm:p-4 border-2 border-blue-200">
+            <div className="text-xs sm:text-sm text-gray-600">Terisi</div>
+            <div className="text-xl sm:text-2xl font-bold text-blue-700">{stats.occupied}</div>
           </div>
-          <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-200">
-            <div className="text-sm text-gray-600">Diperbaiki</div>
-            <div className="text-2xl font-bold text-yellow-700">{stats.repair}</div>
+          <div className="bg-yellow-50 rounded-lg p-2 sm:p-4 border-2 border-yellow-200">
+            <div className="text-xs sm:text-sm text-gray-600">Diperbaiki</div>
+            <div className="text-xl sm:text-2xl font-bold text-yellow-700">{stats.repair}</div>
           </div>
         </div>
 
         {/* Filter */}
-        <div className="mb-4 flex gap-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           <button
             onClick={() => setStatusFilter("all")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "all"
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -224,7 +290,7 @@ export default function DialysisFloor3Page() {
           </button>
           <button
             onClick={() => setStatusFilter("available")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "available"
                 ? "bg-green-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -234,7 +300,7 @@ export default function DialysisFloor3Page() {
           </button>
           <button
             onClick={() => setStatusFilter("occupied")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "occupied"
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -244,7 +310,7 @@ export default function DialysisFloor3Page() {
           </button>
           <button
             onClick={() => setStatusFilter("repair")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "repair"
                 ? "bg-yellow-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -253,6 +319,22 @@ export default function DialysisFloor3Page() {
             Diperbaiki
           </button>
         </div>
+
+        {/* Mobile View - Card Layout */}
+        <div className="lg:hidden space-y-3">
+          {filteredBeds.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              Tidak ada kasur yang sesuai dengan filter
+            </div>
+          ) : (
+            filteredBeds.map((bed) => (
+              <MobileBedCard key={bed.id} bed={bed} />
+            ))
+          )}
+        </div>
+
+        {/* Desktop View - Grid Layout */}
+        <div className="hidden lg:block">
 
         {/* TOP ZONE: three columns with top/bottom splits on left & right */}
         <div className="grid grid-cols-12 gap-4 items-start">
@@ -297,9 +379,10 @@ export default function DialysisFloor3Page() {
             <div className="h-full" />
           </div>
         </div>
+        </div>
 
-        {/* Legend */}
-        <div className="mt-8 rounded-xl border bg-white/80 p-4">
+        {/* Legend - Show on both mobile and desktop */}
+        <div className="mt-4 lg:mt-8 rounded-xl border bg-white/80 p-3 sm:p-4">
           <h4 className="font-semibold text-sky-700 mb-2">Legenda</h4>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 text-sm">
             <li className="flex items-center gap-2">

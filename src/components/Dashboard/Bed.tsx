@@ -204,6 +204,76 @@ const DialysisLayoutPage: React.FC = () => {
     repair: beds.filter((b) => b.floor === 2 && b.status === "repair").length,
   };
 
+  const { getOccupancyDuration } = useBeds();
+  const filteredBeds = useMemo(() => {
+    const floor2Beds = beds.filter((b) => b.floor === 2);
+    if (statusFilter === "all") return floor2Beds;
+    return floor2Beds.filter((b) => b.status === statusFilter);
+  }, [beds, statusFilter]);
+
+  // Mobile View - Card Layout
+  const MobileBedCard = ({ bed }: { bed: any }) => {
+    const statusColors = {
+      available: "bg-green-50 border-green-300",
+      occupied: "bg-blue-50 border-blue-300",
+      repair: "bg-yellow-50 border-yellow-300",
+    };
+    const statusText = {
+      available: "Kosong",
+      occupied: "Terisi",
+      repair: "Diperbaiki",
+    };
+    const duration = bed.status === "occupied" ? getOccupancyDuration(bed.id) : null;
+
+    return (
+      <button
+        onClick={() => {
+          setSelectedBed(bed);
+          setIsModalOpen(true);
+        }}
+        className={`w-full text-left p-3 rounded-lg border-2 ${statusColors[bed.status as keyof typeof statusColors]} transition-all active:scale-[0.98] touch-manipulation`}
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-bold text-lg text-gray-800">Kasur #{bed.id}</span>
+              <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                bed.status === "available" ? "bg-green-200 text-green-800" :
+                bed.status === "occupied" ? "bg-blue-200 text-blue-800" :
+                "bg-yellow-200 text-yellow-800"
+              }`}>
+                {statusText[bed.status as keyof typeof statusText]}
+              </span>
+            </div>
+            <div className="text-xs text-gray-600">
+              Lantai {bed.floor} • {bed.room.replace('_', ' ')}
+            </div>
+            {bed.patient && (
+              <div className="mt-2 text-sm font-medium text-gray-800">
+                Pasien: {bed.patient.name}
+              </div>
+            )}
+            {duration && (
+              <div className="text-xs text-gray-600 mt-1">
+                Durasi: {duration}
+              </div>
+            )}
+            {bed.nurse && (
+              <div className="text-xs text-gray-600 mt-1">
+                PIC: {bed.nurse.name}
+              </div>
+            )}
+          </div>
+          <div className="ml-2">
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <main className="min-h-screen w-full bg-gray-100 text-gray-900">
       <div className="mx-auto max-w-6xl px-2 sm:px-4 py-4 sm:py-8">
@@ -276,44 +346,61 @@ const DialysisLayoutPage: React.FC = () => {
           </button>
         </div>
 
-        {/* TOP ROW: Top Left · Nurse Station · Consultation Room */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 items-start">
-          <div className="sm:col-span-4">{renderRoom("TOP_LEFT")}</div>
+        {/* Mobile View - Card Layout */}
+        <div className="lg:hidden space-y-3">
+          {filteredBeds.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              Tidak ada kasur yang sesuai dengan filter
+            </div>
+          ) : (
+            filteredBeds.map((bed) => (
+              <MobileBedCard key={bed.id} bed={bed} />
+            ))
+          )}
+        </div>
 
-          {/* Nurse Station */}
-          <div className="sm:col-span-4 flex items-center justify-center order-2 sm:order-none my-2 sm:my-0">
-            <section className="relative flex items-center justify-center">
-              <div className="w-32 sm:w-40 md:w-48 h-20 sm:h-24 md:h-28 rounded-full border-2 sm:border-[4px] md:border-[6px] border-sky-500 bg-white/80 shadow-sm flex items-center justify-center">
-                <div className="w-[90%] h-[78%] rounded-full border border-gray-400 flex items-center justify-center">
-                  <span className="text-gray-800 text-[10px] sm:text-xs md:text-sm font-medium text-center px-1">Nurse Station</span>
+        {/* Desktop View - Grid Layout */}
+        <div className="hidden lg:block">
+          {/* TOP ROW: Top Left · Nurse Station · Consultation Room */}
+          <div className="grid grid-cols-12 gap-4 items-start">
+            <div className="col-span-4">{renderRoom("TOP_LEFT")}</div>
+
+            {/* Nurse Station */}
+            <div className="col-span-4 flex items-center justify-center">
+              <section className="relative flex items-center justify-center">
+                <div className="w-48 h-28 rounded-full border-[6px] border-sky-500 bg-white/80 shadow-sm flex items-center justify-center">
+                  <div className="w-[90%] h-[78%] rounded-full border border-gray-400 flex items-center justify-center">
+                    <span className="text-gray-800 text-sm font-medium text-center px-1">Nurse Station</span>
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            </div>
+
+            {/* Consultation Room */}
+            <div className="col-span-4">
+              <Card title="Doctor Consultation Room">
+                <p className="text-[12px] text-gray-600 mt-1">(Ruang konsultasi dokter)</p>
+              </Card>
+            </div>
           </div>
 
-          {/* Consultation Room */}
-          <div className="sm:col-span-4 order-3 sm:order-none">
-            <Card title="Doctor Consultation Room">
-              <p className="text-[10px] sm:text-[12px] text-gray-600 mt-1">(Ruang konsultasi dokter)</p>
-            </Card>
+          {/* MIDDLE ROW: Left · Center(+Bottom) · Right */}
+          <div className="grid grid-cols-12 gap-4 mt-6">
+            <div className="col-span-4">{renderRoom("LEFT")}</div>
+            <div className="col-span-4">{renderRoom("CENTER")}</div>
+            <div className="col-span-4">{renderRoom("RIGHT")}</div>
           </div>
-        </div>
-
-        {/* MIDDLE ROW: Left · Center(+Bottom) · Right */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 mt-4 sm:mt-6">
-          <div className="sm:col-span-4">{renderRoom("LEFT")}</div>
-          <div className="sm:col-span-4">{renderRoom("CENTER")}</div>
-          <div className="sm:col-span-4">{renderRoom("RIGHT")}</div>
-        </div>
 
         {/* BOTTOM ROW: Bottom Center */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 mt-4 sm:mt-6">
-          <div className="hidden sm:block sm:col-span-4"></div>
-          <div className="sm:col-span-4">{renderRoom("BOTTOM_CENTER")}</div>
-          <div className="hidden sm:block sm:col-span-4"></div>
+        <div className="grid grid-cols-12 gap-4 mt-6">
+          <div className="col-span-4"></div>
+          <div className="col-span-4">{renderRoom("BOTTOM_CENTER")}</div>
+          <div className="col-span-4"></div>
+        </div>
         </div>
 
-        <div className="mt-6 sm:mt-8 rounded-xl border bg-white/80 p-3 sm:p-4">
+        {/* Legend - Show on both mobile and desktop */}
+        <div className="mt-4 lg:mt-6 sm:mt-8 rounded-xl border bg-white/80 p-3 sm:p-4">
           <h4 className="text-sm sm:text-base font-semibold text-sky-700 mb-2">Legenda</h4>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 text-xs sm:text-sm">
             <li className="flex items-center gap-2">
