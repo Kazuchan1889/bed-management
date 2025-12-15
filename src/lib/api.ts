@@ -1,5 +1,8 @@
 import { Bed, Patient, BedStats, Nurse, NurseAssignment } from '@/types/bed';
 
+// Re-export types for convenience
+export type { Bed, Patient, BedStats, Nurse, NurseAssignment };
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
 
 class BedAPI {
