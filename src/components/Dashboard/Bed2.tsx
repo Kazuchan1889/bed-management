@@ -58,6 +58,11 @@ const BedRect: React.FC<{ variant: "normal" | "assigned" | "repair"; number: num
       {/* Bed rectangle */}
       <div className={`${bg} w-24 h-12 border-2 ${borderColor} relative flex items-center justify-center`}>
         <span className="text-xs font-semibold text-gray-800">{number}</span>
+        {variant === "assigned" && duration && (
+          <div className="absolute -bottom-5 left-0 right-0 text-[8px] text-gray-600 text-center whitespace-nowrap">
+            {duration}
+          </div>
+        )}
         {variant === "repair" && (
           <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-600 rounded-full border border-yellow-800"></div>
         )}
