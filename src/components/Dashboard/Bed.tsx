@@ -49,23 +49,23 @@ const BedRect: React.FC<{
     <div className="flex flex-col items-center justify-center relative group">
       {/* Small box di atas bed (untuk baris genap) */}
       {smallBoxOnTop && (
-        <div className={`w-4 h-4 border-2 ${borderColor} mb-1 ${smallBoxOnLeft ? "self-start" : "self-end"}`}></div>
+        <div className={`w-2 sm:w-4 h-2 sm:h-4 border border-solid sm:border-2 ${borderColor} mb-0.5 sm:mb-1 ${smallBoxOnLeft ? "self-start" : "self-end"}`}></div>
       )}
       {/* Bed rectangle */}
-      <div className={`${bg} w-24 h-12 border-2 ${borderColor} relative flex items-center justify-center`}>
-        <span className="text-xs font-semibold text-gray-800">{number}</span>
+      <div className={`${bg} w-16 sm:w-20 md:w-24 h-8 sm:h-10 md:h-12 border border-solid sm:border-2 ${borderColor} relative flex items-center justify-center`}>
+        <span className="text-[10px] sm:text-xs font-semibold text-gray-800">{number}</span>
         {variant === "assigned" && duration && (
-          <div className="absolute -bottom-5 left-0 right-0 text-[8px] text-gray-600 text-center whitespace-nowrap">
+          <div className="absolute -bottom-4 sm:-bottom-5 left-0 right-0 text-[7px] sm:text-[8px] text-gray-600 text-center whitespace-nowrap">
             {duration}
           </div>
         )}
         {variant === "repair" && (
-          <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-600 rounded-full border border-yellow-800"></div>
+          <div className="absolute -top-0.5 sm:-top-1 -right-0.5 sm:-right-1 w-2 sm:w-3 h-2 sm:h-3 bg-yellow-600 rounded-full border border-yellow-800"></div>
         )}
       </div>
       {/* Small box di bawah bed (untuk baris ganjil) */}
       {!smallBoxOnTop && (
-        <div className={`w-4 h-4 border-2 ${borderColor} mt-1 ${smallBoxOnLeft ? "self-start" : "self-end"}`}></div>
+        <div className={`w-2 sm:w-4 h-2 sm:h-4 border border-solid sm:border-2 ${borderColor} mt-0.5 sm:mt-1 ${smallBoxOnLeft ? "self-start" : "self-end"}`}></div>
       )}
     </div>
   );
@@ -113,9 +113,9 @@ const BedGridRows: React.FC<{ beds: any[]; rows: number; onBedClick: (bed: any) 
   }
   
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2 sm:gap-3">
       {chunks.map((row, idx) => (
-        <div key={idx} className="flex items-center justify-between gap-6">
+        <div key={idx} className="flex items-center justify-between gap-2 sm:gap-4 md:gap-6">
           {row.map((b, pos) => (
             <BedUnit key={b.id} bed={b} row={idx + 1} positionInRow={pos} onClick={() => onBedClick(b)} />
           ))}
@@ -128,8 +128,8 @@ const BedGridRows: React.FC<{ beds: any[]; rows: number; onBedClick: (bed: any) 
 };
 
 const Card: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <section className="border-4 border-sky-500 rounded-2xl p-4 bg-white/80 shadow-sm">
-    <h3 className="text-sm font-semibold text-sky-700 tracking-wide">{title}</h3>
+  <section className="border-2 sm:border-4 border-sky-500 rounded-xl sm:rounded-2xl p-2 sm:p-4 bg-white/80 shadow-sm">
+    <h3 className="text-xs sm:text-sm font-semibold text-sky-700 tracking-wide">{title}</h3>
     {children}
   </section>
 );
@@ -281,11 +281,11 @@ const DialysisLayoutPage: React.FC = () => {
           <div className="sm:col-span-4">{renderRoom("TOP_LEFT")}</div>
 
           {/* Nurse Station */}
-          <div className="sm:col-span-4 flex items-center justify-center order-2 sm:order-none">
+          <div className="sm:col-span-4 flex items-center justify-center order-2 sm:order-none my-2 sm:my-0">
             <section className="relative flex items-center justify-center">
-              <div className="w-40 sm:w-48 h-24 sm:h-28 rounded-full border-[4px] sm:border-[6px] border-sky-500 bg-white/80 shadow-sm flex items-center justify-center">
+              <div className="w-32 sm:w-40 md:w-48 h-20 sm:h-24 md:h-28 rounded-full border-2 sm:border-[4px] md:border-[6px] border-sky-500 bg-white/80 shadow-sm flex items-center justify-center">
                 <div className="w-[90%] h-[78%] rounded-full border border-gray-400 flex items-center justify-center">
-                  <span className="text-gray-800 text-xs sm:text-sm font-medium">Nurse Station</span>
+                  <span className="text-gray-800 text-[10px] sm:text-xs md:text-sm font-medium text-center px-1">Nurse Station</span>
                 </div>
               </div>
             </section>

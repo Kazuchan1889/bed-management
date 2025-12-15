@@ -51,13 +51,13 @@ const Route = ({
   return (
     <button
       onClick={onClick}
-      className={`flex items-center justify-start gap-2 w-full rounded px-2 py-1.5 text-sm transition-[box-shadow,_background-color,_color] ${
+      className={`flex items-center justify-start gap-2 w-full rounded px-2 py-2.5 sm:py-1.5 text-sm transition-[box-shadow,_background-color,_color] touch-manipulation ${
         selected
           ? "bg-white text-stone-950 shadow"
-          : "hover:bg-stone-200 bg-transparent text-stone-500 shadow-none"
+          : "hover:bg-stone-200 active:bg-stone-300 bg-transparent text-stone-500 shadow-none"
       }`}
     >
-      <Icon className={selected ? "text-violet-500" : ""} />
+      <Icon className={`${selected ? "text-violet-500" : ""} w-5 h-5 sm:w-4 sm:h-4`} />
       <span>{title}</span>
     </button>
   );

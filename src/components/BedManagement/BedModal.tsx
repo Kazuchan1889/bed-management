@@ -245,11 +245,11 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-2 md:p-4"
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-xl"
+        className="bg-white rounded-t-2xl sm:rounded-lg p-4 sm:p-6 max-w-md w-full h-[95vh] sm:h-auto sm:max-h-[90vh] overflow-y-auto shadow-xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center mb-3 sm:mb-4">
@@ -274,9 +274,9 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
 
         {/* Patient Info */}
         {bed.status === 'occupied' && bed.patient && (
-          <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <h3 className="font-semibold text-blue-900 mb-2">Informasi Pasien</h3>
-            <div className="space-y-1 text-sm">
+          <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <h3 className="text-sm sm:text-base font-semibold text-blue-900 mb-2">Informasi Pasien</h3>
+            <div className="space-y-1 text-xs sm:text-sm">
               <p><strong>Nama:</strong> {bed.patient.name}</p>
               {bed.patient.age && <p><strong>Usia:</strong> {bed.patient.age} tahun</p>}
               {bed.patient.gender && (
@@ -327,9 +327,9 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
 
         {/* Repair Info */}
         {bed.status === 'repair' && (
-          <div className="mb-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-            <h3 className="font-semibold text-yellow-900 mb-2">Informasi Perbaikan</h3>
-            <div className="space-y-1 text-sm">
+          <div className="mb-3 sm:mb-4 p-3 sm:p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <h3 className="text-sm sm:text-base font-semibold text-yellow-900 mb-2">Informasi Perbaikan</h3>
+            <div className="space-y-1 text-xs sm:text-sm">
               {bed.repairNote && (
                 <p className="text-yellow-800"><strong>Catatan:</strong> {bed.repairNote}</p>
               )}
@@ -367,13 +367,13 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
             <>
               <button
                 onClick={() => setAction('assign')}
-                className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium"
+                className="w-full bg-blue-500 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors font-medium text-sm sm:text-base touch-manipulation"
               >
                 Assign Pasien ke Kasur Ini
               </button>
               <button
                 onClick={() => setAction('repair')}
-                className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition-colors font-medium"
+                className="w-full bg-yellow-500 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-yellow-600 active:bg-yellow-700 transition-colors font-medium text-sm sm:text-base touch-manipulation"
               >
                 Tandai Sedang Diperbaiki
               </button>
@@ -383,7 +383,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
           {bed.status === 'occupied' && (
             <button
               onClick={handleRelease}
-              className="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors font-medium"
+              className="w-full bg-green-500 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-green-600 active:bg-green-700 transition-colors font-medium text-sm sm:text-base touch-manipulation"
             >
               Lepaskan Pasien dari Kasur
             </button>
@@ -392,7 +392,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
           {bed.status === 'repair' && (
             <button
               onClick={handleSetAvailable}
-              className="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition-colors font-medium"
+              className="w-full bg-green-500 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-green-600 active:bg-green-700 transition-colors font-medium text-sm sm:text-base touch-manipulation"
             >
               Selesai Diperbaiki (Kembalikan ke Kosong)
             </button>
@@ -411,7 +411,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   placeholder="Masukkan nama pasien"
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                   required
                 />
               </div>
@@ -422,7 +422,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   placeholder="Masukkan usia"
                   value={patientAge}
                   onChange={(e) => setPatientAge(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                   min="0"
                   max="150"
                 />
@@ -432,7 +432,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                 <select
                   value={patientGender}
                   onChange={(e) => setPatientGender(e.target.value as 'male' | 'female')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                 >
                   <option value="male">Laki-laki</option>
                   <option value="female">Perempuan</option>
@@ -444,7 +444,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   placeholder="Masukkan nomor rekam medis"
                   value={medicalRecord}
                   onChange={(e) => setMedicalRecord(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                   rows={2}
                 />
               </div>
@@ -456,7 +456,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   type="date"
                   value={assignedAt}
                   onChange={(e) => setAssignedAt(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                   required
                 />
               </div>
@@ -469,7 +469,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   value={releasedAt}
                   onChange={(e) => setReleasedAt(e.target.value)}
                   min={assignedAt || undefined}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                 />
                 {releasedAt && assignedAt && new Date(releasedAt) <= new Date(assignedAt) && (
                   <p className="text-red-500 text-xs mt-1">Tanggal selesai harus setelah tanggal mulai</p>
@@ -484,7 +484,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   <select
                     value={selectedNurseId || ''}
                     onChange={(e) => setSelectedNurseId(e.target.value ? parseInt(e.target.value) : undefined)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base sm:text-sm"
                   >
                     <option value="">Pilih Perawat (Opsional)</option>
                     {nurses.map((nurse) => (
@@ -502,13 +502,13 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                 <button
                   onClick={handleAssign}
                   disabled={loading}
-                  className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-blue-500 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base touch-manipulation"
                 >
                   {loading ? 'Menyimpan...' : 'Simpan'}
                 </button>
                 <button
                   onClick={() => setAction(null)}
-                  className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                  className="flex-1 bg-gray-300 text-gray-700 py-3 sm:py-2 px-4 rounded-lg hover:bg-gray-400 active:bg-gray-500 transition-colors font-medium text-sm sm:text-base touch-manipulation"
                 >
                   Batal
                 </button>
@@ -526,7 +526,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   placeholder="Masukkan catatan perbaikan, misalnya: kerusakan mesin, perlu pembersihan, dll"
                   value={repairNote}
                   onChange={(e) => setRepairNote(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-base sm:text-sm"
                   rows={4}
                 />
               </div>
@@ -538,7 +538,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   type="date"
                   value={repairStartAt}
                   onChange={(e) => setRepairStartAt(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-base sm:text-sm"
                   required
                 />
               </div>
@@ -551,7 +551,7 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                   value={repairEndAt}
                   onChange={(e) => setRepairEndAt(e.target.value)}
                   min={repairStartAt || undefined}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                  className="w-full px-3 py-2.5 sm:py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-base sm:text-sm"
                 />
                 {repairEndAt && repairStartAt && new Date(repairEndAt) <= new Date(repairStartAt) && (
                   <p className="text-red-500 text-xs mt-1">Tanggal selesai harus setelah tanggal mulai</p>
@@ -561,13 +561,13 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
                 <button
                   onClick={handleRepair}
                   disabled={loading}
-                  className="flex-1 bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-yellow-500 text-white py-3 sm:py-2 px-4 rounded-lg hover:bg-yellow-600 active:bg-yellow-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base touch-manipulation"
                 >
                   {loading ? 'Menyimpan...' : 'Simpan'}
                 </button>
                 <button
                   onClick={() => setAction(null)}
-                  className="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-400 transition-colors font-medium"
+                  className="flex-1 bg-gray-300 text-gray-700 py-3 sm:py-2 px-4 rounded-lg hover:bg-gray-400 active:bg-gray-500 transition-colors font-medium text-sm sm:text-base touch-manipulation"
                 >
                   Batal
                 </button>

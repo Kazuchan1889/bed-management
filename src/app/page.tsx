@@ -37,7 +37,7 @@ export default function Home() {
       {/* Mobile Menu Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-lg shadow-lg hover:bg-stone-100 transition-colors"
+        className="lg:hidden fixed top-3 left-3 z-50 bg-white p-3 rounded-lg shadow-lg hover:bg-stone-100 active:bg-stone-200 transition-colors touch-manipulation"
         aria-label="Toggle menu"
       >
         {sidebarOpen ? (
@@ -73,7 +73,7 @@ export default function Home() {
       </div>
 
       {/* Main Content */}
-      <div className="lg:ml-[220px] p-2 sm:p-4">
+      <div className="lg:ml-[220px] p-2 sm:p-3 md:p-4 pb-4 sm:pb-6">
         {renderContent()}
       </div>
     </main>

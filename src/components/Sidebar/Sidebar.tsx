@@ -13,13 +13,13 @@ export const Sidebar = ({ selectedPage, onSelectPage, onClose }: SidebarProps) =
     <aside className="bg-white lg:bg-white p-3 lg:p-3 rounded-lg lg:rounded-lg shadow lg:shadow h-full lg:h-fit space-y-4 w-[220px]">
       {/* Mobile Close Button */}
       {onClose && (
-        <div className="flex justify-end lg:hidden">
+        <div className="flex justify-end lg:hidden mb-2">
           <button
             onClick={onClose}
-            className="p-2 hover:bg-stone-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-stone-100 active:bg-stone-200 rounded-lg transition-colors touch-manipulation"
             aria-label="Close menu"
           >
-            <FiX className="w-5 h-5 text-stone-700" />
+            <FiX className="w-6 h-6 text-stone-700" />
           </button>
         </div>
       )}
