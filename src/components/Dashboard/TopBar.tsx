@@ -59,22 +59,23 @@ export const TopBar = () => {
   const occupancyRate = stats.total > 0 ? ((stats.occupied / stats.total) * 100).toFixed(1) : 0;
 
   return (
-    <div className="border-b px-4 mb-4 mt-2 pb-4 border-stone-200 relative">
+    <div className="border-b px-2 sm:px-4 mb-4 mt-2 pb-3 sm:pb-4 border-stone-200 relative">
       <div className="flex items-center justify-between p-0.5">
-        <div>
-          <span className="text-sm font-bold block">🚀 {greeting}!</span>
-          <span className="text-xs block text-stone-500">
-            {formatDate(now)} • {stats.total} Total Beds • {occupancyRate}% Occupied
+        <div className="flex-1 min-w-0">
+          <span className="text-xs sm:text-sm font-bold block">🚀 {greeting}!</span>
+          <span className="text-xs block text-stone-500 truncate">
+            <span className="hidden sm:inline">{formatDate(now)} • </span>
+            {stats.total} Beds • {occupancyRate}% Occupied
           </span>
         </div>
 
-        <div className="relative">
+        <div className="relative flex-shrink-0 ml-2">
           <button
             onClick={refreshBeds}
-            className="flex text-sm items-center gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-3 py-1.5 rounded"
+            className="flex text-xs sm:text-sm items-center gap-1 sm:gap-2 bg-stone-100 transition-colors hover:bg-violet-100 hover:text-violet-700 px-2 sm:px-3 py-1.5 rounded"
           >
-            <FiCalendar />
-            <span>Refresh</span>
+            <FiCalendar className="w-4 h-4 sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">Refresh</span>
           </button>
         </div>
       </div>

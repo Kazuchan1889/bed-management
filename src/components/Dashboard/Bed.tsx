@@ -206,37 +206,37 @@ const DialysisLayoutPage: React.FC = () => {
 
   return (
     <main className="min-h-screen w-full bg-gray-100 text-gray-900">
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <header className="mb-6">
-          <h1 className="text-xl md:text-2xl font-bold leading-tight">DYALISIS BED AND MACHINE MANAGEMENT</h1>
-          <p className="text-gray-600">KLINIK UTAMA JAKARTA KIDNEY CENTER — Lantai 2</p>
+      <div className="mx-auto max-w-6xl px-2 sm:px-4 py-4 sm:py-8">
+        <header className="mb-4 sm:mb-6">
+          <h1 className="text-base sm:text-xl md:text-2xl font-bold leading-tight">DYALISIS BED AND MACHINE MANAGEMENT</h1>
+          <p className="text-xs sm:text-sm text-gray-600">KLINIK UTAMA JAKARTA KIDNEY CENTER — Lantai 2</p>
         </header>
 
         {/* Statistics Bar */}
-        <div className="mb-6 grid grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg p-4 border-2 border-gray-200">
-            <div className="text-sm text-gray-600">Total Kasur</div>
-            <div className="text-2xl font-bold text-gray-800">{stats.total}</div>
+        <div className="mb-4 sm:mb-6 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+          <div className="bg-white rounded-lg p-2 sm:p-4 border-2 border-gray-200">
+            <div className="text-xs sm:text-sm text-gray-600">Total Kasur</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-800">{stats.total}</div>
           </div>
-          <div className="bg-green-50 rounded-lg p-4 border-2 border-green-200">
-            <div className="text-sm text-gray-600">Kosong</div>
-            <div className="text-2xl font-bold text-green-700">{stats.available}</div>
+          <div className="bg-green-50 rounded-lg p-2 sm:p-4 border-2 border-green-200">
+            <div className="text-xs sm:text-sm text-gray-600">Kosong</div>
+            <div className="text-xl sm:text-2xl font-bold text-green-700">{stats.available}</div>
           </div>
-          <div className="bg-blue-50 rounded-lg p-4 border-2 border-blue-200">
-            <div className="text-sm text-gray-600">Terisi</div>
-            <div className="text-2xl font-bold text-blue-700">{stats.occupied}</div>
+          <div className="bg-blue-50 rounded-lg p-2 sm:p-4 border-2 border-blue-200">
+            <div className="text-xs sm:text-sm text-gray-600">Terisi</div>
+            <div className="text-xl sm:text-2xl font-bold text-blue-700">{stats.occupied}</div>
           </div>
-          <div className="bg-yellow-50 rounded-lg p-4 border-2 border-yellow-200">
-            <div className="text-sm text-gray-600">Diperbaiki</div>
-            <div className="text-2xl font-bold text-yellow-700">{stats.repair}</div>
+          <div className="bg-yellow-50 rounded-lg p-2 sm:p-4 border-2 border-yellow-200">
+            <div className="text-xs sm:text-sm text-gray-600">Diperbaiki</div>
+            <div className="text-xl sm:text-2xl font-bold text-yellow-700">{stats.repair}</div>
           </div>
         </div>
 
         {/* Filter */}
-        <div className="mb-4 flex gap-2">
+        <div className="mb-4 flex flex-wrap gap-2">
           <button
             onClick={() => setStatusFilter("all")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "all"
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -246,7 +246,7 @@ const DialysisLayoutPage: React.FC = () => {
           </button>
           <button
             onClick={() => setStatusFilter("available")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "available"
                 ? "bg-green-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -256,7 +256,7 @@ const DialysisLayoutPage: React.FC = () => {
           </button>
           <button
             onClick={() => setStatusFilter("occupied")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "occupied"
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -266,7 +266,7 @@ const DialysisLayoutPage: React.FC = () => {
           </button>
           <button
             onClick={() => setStatusFilter("repair")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium ${
               statusFilter === "repair"
                 ? "bg-yellow-500 text-white"
                 : "bg-white text-gray-700 border border-gray-300"
@@ -277,45 +277,45 @@ const DialysisLayoutPage: React.FC = () => {
         </div>
 
         {/* TOP ROW: Top Left · Nurse Station · Consultation Room */}
-        <div className="grid grid-cols-12 gap-4 items-start">
-          <div className="col-span-4">{renderRoom("TOP_LEFT")}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 items-start">
+          <div className="sm:col-span-4">{renderRoom("TOP_LEFT")}</div>
 
           {/* Nurse Station */}
-          <div className="col-span-4 flex items-center justify-center">
+          <div className="sm:col-span-4 flex items-center justify-center order-2 sm:order-none">
             <section className="relative flex items-center justify-center">
-              <div className="w-48 h-28 rounded-full border-[6px] border-sky-500 bg-white/80 shadow-sm flex items-center justify-center">
+              <div className="w-40 sm:w-48 h-24 sm:h-28 rounded-full border-[4px] sm:border-[6px] border-sky-500 bg-white/80 shadow-sm flex items-center justify-center">
                 <div className="w-[90%] h-[78%] rounded-full border border-gray-400 flex items-center justify-center">
-                  <span className="text-gray-800 text-sm font-medium">Nurse Station</span>
+                  <span className="text-gray-800 text-xs sm:text-sm font-medium">Nurse Station</span>
                 </div>
               </div>
             </section>
           </div>
 
           {/* Consultation Room */}
-          <div className="col-span-4">
+          <div className="sm:col-span-4 order-3 sm:order-none">
             <Card title="Doctor Consultation Room">
-              <p className="text-[12px] text-gray-600 mt-1">(Ruang konsultasi dokter)</p>
+              <p className="text-[10px] sm:text-[12px] text-gray-600 mt-1">(Ruang konsultasi dokter)</p>
             </Card>
           </div>
         </div>
 
         {/* MIDDLE ROW: Left · Center(+Bottom) · Right */}
-        <div className="grid grid-cols-12 gap-4 mt-6">
-          <div className="col-span-4">{renderRoom("LEFT")}</div>
-          <div className="col-span-4">{renderRoom("CENTER")}</div>
-          <div className="col-span-4">{renderRoom("RIGHT")}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 mt-4 sm:mt-6">
+          <div className="sm:col-span-4">{renderRoom("LEFT")}</div>
+          <div className="sm:col-span-4">{renderRoom("CENTER")}</div>
+          <div className="sm:col-span-4">{renderRoom("RIGHT")}</div>
         </div>
 
         {/* BOTTOM ROW: Bottom Center */}
-        <div className="grid grid-cols-12 gap-4 mt-6">
-          <div className="col-span-4"></div>
-          <div className="col-span-4">{renderRoom("BOTTOM_CENTER")}</div>
-          <div className="col-span-4"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 sm:gap-4 mt-4 sm:mt-6">
+          <div className="hidden sm:block sm:col-span-4"></div>
+          <div className="sm:col-span-4">{renderRoom("BOTTOM_CENTER")}</div>
+          <div className="hidden sm:block sm:col-span-4"></div>
         </div>
 
-        <div className="mt-8 rounded-xl border bg-white/80 p-4">
-          <h4 className="font-semibold text-sky-700 mb-2">Legenda</h4>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 text-sm">
+        <div className="mt-6 sm:mt-8 rounded-xl border bg-white/80 p-3 sm:p-4">
+          <h4 className="text-sm sm:text-base font-semibold text-sky-700 mb-2">Legenda</h4>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 text-xs sm:text-sm">
             <li className="flex items-center gap-2">
               <div className="w-16 h-8 border border-gray-700 rounded-sm bg-white relative">
                 <span className="absolute inset-0 flex items-center justify-center text-[11px] font-semibold">12</span>

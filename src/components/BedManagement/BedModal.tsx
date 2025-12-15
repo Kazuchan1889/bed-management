@@ -245,29 +245,29 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
       onClick={onClose}
     >
       <div 
-        className="bg-white rounded-lg p-6 max-w-md w-full max-h-[90vh] overflow-y-auto shadow-xl"
+        className="bg-white rounded-lg p-4 sm:p-6 max-w-md w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-800">Kelola Kasur #{bed.id}</h2>
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-800">Kelola Kasur #{bed.id}</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+            className="text-gray-500 hover:text-gray-700 text-2xl font-bold w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors flex-shrink-0"
           >
             ×
           </button>
         </div>
 
         {/* Status Badge */}
-        <div className="mb-4">
-          <div className={`inline-flex items-center px-3 py-1 rounded-full border-2 ${getStatusColor(bed.status)}`}>
-            <span className="text-sm font-semibold">{getStatusText(bed.status)}</span>
+        <div className="mb-3 sm:mb-4">
+          <div className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full border-2 ${getStatusColor(bed.status)}`}>
+            <span className="text-xs sm:text-sm font-semibold">{getStatusText(bed.status)}</span>
           </div>
-          <p className="text-sm text-gray-600 mt-2">
+          <p className="text-xs sm:text-sm text-gray-600 mt-2">
             <strong>Lantai:</strong> {bed.floor} | <strong>Ruangan:</strong> {bed.room.replace('_', ' ')}
           </p>
         </div>
@@ -400,8 +400,8 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
 
           {/* Assign Form */}
           {action === 'assign' && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-3">
-              <h3 className="font-semibold text-gray-800">Form Assign Pasien</h3>
+            <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-2 sm:space-y-3">
+              <h3 className="text-sm sm:text-base font-semibold text-gray-800">Form Assign Pasien</h3>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Nama Pasien <span className="text-red-500">*</span>
@@ -518,8 +518,8 @@ export const BedModal: React.FC<BedModalProps> = ({ bed, isOpen, onClose }) => {
 
           {/* Repair Form */}
           {action === 'repair' && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-3">
-              <h3 className="font-semibold text-gray-800">Form Tandai Perbaikan</h3>
+            <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-gray-50 rounded-lg border border-gray-200 space-y-2 sm:space-y-3">
+              <h3 className="text-sm sm:text-base font-semibold text-gray-800">Form Tandai Perbaikan</h3>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Catatan Perbaikan (opsional)</label>
                 <textarea

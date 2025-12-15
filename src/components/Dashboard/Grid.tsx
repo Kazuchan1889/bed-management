@@ -12,11 +12,19 @@ interface GridProps {
 
 export const Grid: React.FC<GridProps> = ({ onSelectPage }) => {
   return (
-    <div className="px-4 grid gap-3 grid-cols-12">
-      <StatCards />
-      <ActivityGraph />
-      <UsageRadar />
-      <RecentTransactions onSelectPage={onSelectPage} />
+    <div className="px-2 sm:px-4 grid gap-3 grid-cols-1 sm:grid-cols-12">
+      <div className="sm:col-span-12">
+        <StatCards />
+      </div>
+      <div className="sm:col-span-12 lg:col-span-8">
+        <ActivityGraph />
+      </div>
+      <div className="sm:col-span-12 lg:col-span-4">
+        <UsageRadar />
+      </div>
+      <div className="sm:col-span-12">
+        <RecentTransactions onSelectPage={onSelectPage} />
+      </div>
     </div>
   );
 };
