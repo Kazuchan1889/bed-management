@@ -1,4 +1,4 @@
-import { Bed, Patient, BedStats, Nurse, NurseAssignment } from '@/types/bed';
+import { Bed, Patient, BedStats, Nurse, NurseAssignment, BedHistory } from '@/types/bed';
 
 // Re-export types for convenience
 export type { Bed, Patient, BedStats, Nurse, NurseAssignment };
@@ -179,4 +179,51 @@ class NurseAPI {
 }
 
 export const nurseAPI = new NurseAPI();
+
+// History API
+class HistoryAPI {
+  private baseURL: string;
+
+  constructor() {
+    this.baseURL = API_BASE_URL;
+  }
+
+  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    const url = `${this.baseURL}${endpoint}`;
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Network error' }));
+      throw new Error(error.error || `HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async getHistory(filters?: { floor?: number; bedId?: number; limit?: number }): Promise<BedHistory[]> {
+    const params = new URLSearchParams();
+    if (filters?.floor) params.append('floor', filters.floor.toString());
+    if (filters?.bedId) params.append('bedId', filters.bedId.toString());
+    if (filters?.limit) params.append('limit', filters.limit.toString());
+
+    const query = params.toString();
+    return this.request<BedHistory[]>(`/history${query ? `?${query}` : ''}`);
+  }
+
+  async getBedHistory(bedId: number, limit?: number): Promise<BedHistory[]> {
+    const params = new URLSearchParams();
+    if (limit) params.append('limit', limit.toString());
+
+    const query = params.toString();
+    return this.request<BedHistory[]>(`/history/bed/${bedId}${query ? `?${query}` : ''}`);
+  }
+}
+
+export const historyAPI = new HistoryAPI();
 

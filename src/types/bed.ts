@@ -67,3 +67,24 @@ export interface NurseAssignment {
   updatedAt?: string;
 }
 
+export interface BedHistory {
+  id: number;
+  bedId: number;
+  bed: {
+    id: number;
+    room: string;
+    floor: number;
+  };
+  action: 'assigned' | 'released' | 'repair' | 'available';
+  patient?: Patient | null;
+  nurse?: {
+    id: number;
+    name: string;
+    employeeId?: string;
+  } | null;
+  assignedAt?: string | null;
+  releasedAt?: string | null;
+  repairNote?: string | null;
+  createdAt: string;
+}
+
