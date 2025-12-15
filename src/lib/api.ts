@@ -1,33 +1,6 @@
+import { Bed, Patient, BedStats, Nurse, NurseAssignment } from '@/types/bed';
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api';
-
-export interface Patient {
-  id: string;
-  name: string;
-  age?: number;
-  gender?: 'male' | 'female';
-  medicalRecord?: string;
-}
-
-export interface Bed {
-  id: number;
-  status: 'available' | 'occupied' | 'repair' | 'maintenance';
-  patient?: Patient;
-  assignedAt?: string;
-  releasedAt?: string;
-  repairNote?: string;
-  repairStartAt?: string;
-  repairEndAt?: string;
-  room: string;
-  floor: number;
-}
-
-export interface BedStats {
-  total: number;
-  available: number;
-  occupied: number;
-  repair: number;
-  maintenance: number;
-}
 
 class BedAPI {
   private baseURL: string;
@@ -106,30 +79,6 @@ class BedAPI {
 export const bedAPI = new BedAPI();
 
 // Nurse API
-export interface Nurse {
-  id: number;
-  name: string;
-  employeeId?: string;
-  phone?: string;
-  email?: string;
-  status: 'active' | 'inactive';
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface NurseAssignment {
-  id: number;
-  nurseId: number;
-  bedId: number;
-  assignedAt: string;
-  releasedAt?: string;
-  notes?: string;
-  nurse?: Nurse;
-  bed?: Bed;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 class NurseAPI {
   private baseURL: string;
 
